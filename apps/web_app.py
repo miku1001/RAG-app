@@ -17,7 +17,7 @@ st.title("Simple RAG Demo")
 
 #grab api key
 load_dotenv()
-api_key = os.environ.get('GEMINI_API_KEY2')
+api_key = os.environ.get('GEMINI_API_KEY')
 if not api_key:
   st.error('No API key')
   st.stop()
