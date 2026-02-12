@@ -1,0 +1,33 @@
+import os
+from dotenv import load_dotenv
+
+#grab api key
+load_dotenv()
+
+api_key = os.environ.get('GEMINI_API_KEY')
+
+if not api_key:
+  raise ValueError('No API key')
+
+#load model
+from langchain.chat_models import init_chat_model
+model = init_chat_model("google_genai:gemini-2.5-flash")
+
+model.invoke('Hi').content
+
+
+ 
+#prompt template
+from langchain_core.prompts import PromptTemplate
+
+context = "Manila is the capital of philippines"
+prompt = PromptTemplate(
+          template="""Answer the question based only on the following context: {context}. 
+          Reject questions unrelated to the context: {context}.
+          Note: Be accurate and concise. Don't create your own question. Just answer the user's chat.
+
+          Question: {question}
+          """)
+
+chain =  prompt | model 
+
