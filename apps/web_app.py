@@ -75,7 +75,7 @@ if st.button("Initialize RAG System"):
 
 if st.session_state.store is not None:
   #load model
-  model = init_chat_model("gen_ai:gemini-2.5-flash-lite")
+  model = init_chat_model("goolge_genai:gemini-2.5-flash")
 
   #prompt template
   prompt = ChatPromptTemplate.from_messages([
