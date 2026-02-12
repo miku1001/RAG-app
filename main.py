@@ -18,14 +18,14 @@ if not api_key:
   raise ValueError('No API key')
 
 #load model
-model = init_chat_model("google_genai:gemini-2.5-flash")
+model = init_chat_model("google_genai:gemini-1.5-flash")
 
 #document loader
 loader = PyPDFLoader("files\\phil_const.pdf")
 documents= loader.load()
 
 #text_split and chunking
-text_splitter = RecursiveCharacterTextSplitter(
+text_splitter = RecursiveCharacterTextSplitter( 
   chunk_size=1000, 
   chunk_overlap=200, 
   separators=["\n\n", "\n", " ", ""]
