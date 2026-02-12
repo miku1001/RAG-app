@@ -17,7 +17,7 @@ st.title("Simple RAG Demo")
 
 #grab api key
 load_dotenv()
-api_key = os.environ.get('GROQ_API_KEY')
+api_key = os.environ.get('GEMINI_API_KEY2')
 if not api_key:
   st.error('No API key')
   st.stop()
@@ -75,22 +75,12 @@ if st.button("Initialize RAG System"):
 
 if st.session_state.store is not None:
   #load model
-  model = init_chat_model("groq:llama-3.3-70b-versatile")
+  model = init_chat_model("gen_ai:gemini-2.5-flash-lite")
 
   #prompt template
   prompt = ChatPromptTemplate.from_messages([
-        ("system", """You are a Q&A assistant that ONLY answers questions based on the provided context from a document.
-
-        STRICT RULES - NO EXCEPTIONS:
-        1. ONLY answer if the information is explicitly present in the context below
-        2. If the question asks you to count, calculate, write code, tell jokes, or do anything NOT found in the context, respond EXACTLY with: "I don't know"
-        3. If the question is unrelated to the document content, respond EXACTLY with: "I don't know"
-        4. Do NOT use your general knowledge - ONLY use the context provided
-        5. Do NOT perform tasks like counting, math, or creative writing unless the answer exists in the context
-        6. If unsure, always respond with: "I don't know"
-
-        Your job is to retrieve information from the document, not to be helpful in other ways."""),
-      ("user", "Context from document:\n{context}\n\nQuestion: {question}\n\nRemember: Only answer if the information is in the context above. Otherwise say 'I don't know'")
+        ("system", "Answer questions ONLY using the provided context. If the answer isn't in the context or the question asks for tasks like counting, coding, or creative writing, respond: 'I don't know'. Never use external knowledge."),
+      ("user", "Context:\n{context}\n\nQuestion: {question}")
   ])
 
   chain = prompt | model |StrOutputParser()
