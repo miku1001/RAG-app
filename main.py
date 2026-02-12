@@ -13,7 +13,37 @@ if not api_key:
 from langchain.chat_models import init_chat_model
 model = init_chat_model("google_genai:gemini-2.5-flash")
 
-model.invoke('Hi').content
+
+#document loader
+from langchain_community.document_loaders import PyPDFLoader
+
+loader = PyPDFLoader('files\phil_const.pdf')
+documents= loader.load()
+
+
+#text_split and chunking
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(
+  chunk_size=1000, 
+  chunk_overlap=200, 
+  separators=["\n\n", "\n", " ", ""]
+  )
+
+chunks = text_splitter.split_documents(documents)
+
+#embedding and store
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
+
+embeddings = HuggingFaceEmbeddings(
+  model_name="sentence-transformers/all-mpnet-base-v2"
+  )
+
+store = Chroma.from_documents(documents=chunks, embedding=embeddings)
+
+
+
 
 
  
@@ -30,4 +60,6 @@ prompt = PromptTemplate(
           """)
 
 chain =  prompt | model 
+
+
 
