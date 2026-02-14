@@ -79,7 +79,7 @@ if st.session_state.store is not None:
 
   #prompt template
   prompt = ChatPromptTemplate.from_messages([
-        ("system", "Answer questions ONLY using the provided context. If the answer isn't in the context or the question asks for tasks like counting, coding, or creative writing, respond: 'I don't know'. Never use external knowledge."),
+        ("system", "Answer questions ONLY using the provided context. If the answer isn't in the context or the question asks for tasks like counting, coding, or creative writing, respond: 'I don't know'. Just stay within the context."),
       ("user", "Context:\n{context}\n\nQuestion: {question}")
   ])
 
